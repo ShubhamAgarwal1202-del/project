@@ -1,0 +1,45 @@
+<div class="feed-layout">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <h1>ProfileBook</h1>
+    <div class="nav-links">
+      <span>Welcome, {{ username }}!</span>
+      <a routerLink="/create-post">+ Create Post</a>
+      <a routerLink="/messages">Messages</a>
+      <a routerLink="/search">Search Users</a>
+      <button (click)="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Posts -->
+  <div class="feed-container">
+    <h2>Recent Posts</h2>
+
+    <div *ngIf="posts.length === 0" class="no-posts">
+      No posts yet. Be the first to post!
+    </div>
+
+    <div class="post-card" *ngFor="let post of posts">
+      <div class="post-header">
+        <span class="post-author">👤 User #{{ post.userId }}</span>
+      </div>
+      <p class="post-content">{{ post.content }}</p>
+      <img *ngIf="post.postImage" [src]="post.postImage" class="post-image" />
+      <div class="post-actions">
+        <button (click)="likePost(post.postId)">👍 Like</button>
+        <button (click)="toggleComments(post.postId)">💬 Comments</button>
+      </div>
+
+      <!-- Comments Section -->
+      <div *ngIf="postComments[post.postId]" class="comments-section">
+        <div *ngFor="let comment of postComments[post.postId]" class="comment">
+          <strong>User #{{ comment.userId }}:</strong> {{ comment.content }}
+        </div>
+        <div class="add-comment">
+          <input type="text" placeholder="Write a comment..." [(ngModel)]="commentTexts[post.postId]" />
+          <button (click)="addComment(post.postId)">Post</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

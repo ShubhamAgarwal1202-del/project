@@ -1,0 +1,12 @@
+.navbar { display: flex; justify-content: space-between; align-items: center; background: #1a1a2e; padding: 12px 30px; color: white; }
+.navbar h1 { margin: 0; font-size: 1.5rem; }
+.navbar a { color: white; text-decoration: none; }
+.container { max-width: 700px; margin: 30px auto; padding: 0 15px; }
+.post-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 15px; }
+.post-meta { display: flex; justify-content: space-between; margin-bottom: 10px; }
+.status.pending { background: #fff3cd; color: #856404; padding: 3px 10px; border-radius: 12px; font-size: 0.85rem; }
+.actions { display: flex; gap: 10px; margin-top: 15px; }
+.btn-approve { padding: 8px 18px; background: #42b72a; color: white; border: none; border-radius: 6px; cursor: pointer; }
+.btn-reject { padding: 8px 18px; background: #ff4d4d; color: white; border: none; border-radius: 6px; cursor: pointer; }
+.success { color: green; margin-bottom: 15px; }
+.no-items { text-align: center; color: #888; padding: 40px; }

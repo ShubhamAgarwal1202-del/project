@@ -1,0 +1,34 @@
+<div class="admin-layout">
+  <nav class="navbar">
+    <h1>ProfileBook Admin</h1>
+    <button (click)="logout()">Logout</button>
+  </nav>
+
+  <div class="dashboard">
+    <h2>Admin Dashboard</h2>
+    <p>Welcome, Admin! Manage the platform from here.</p>
+
+    <div class="cards">
+      <a routerLink="/admin/users" class="card">
+        <span class="icon">👥</span>
+        <h3>Manage Users</h3>
+        <p>Create, update, delete users</p>
+      </a>
+      <a routerLink="/admin/posts" class="card">
+        <span class="icon">📝</span>
+        <h3>Approve Posts</h3>
+        <p>Review and approve pending posts</p>
+      </a>
+      <a routerLink="/admin/reported" class="card">
+        <span class="icon">🚩</span>
+        <h3>Reported Users</h3>
+        <p>View and manage user reports</p>
+      </a>
+      <a routerLink="/admin/groups" class="card">
+        <span class="icon">👨‍👩‍👧</span>
+        <h3>Manage Groups</h3>
+        <p>Create and manage user groups</p>
+      </a>
+    </div>
+  </div>
+</div>

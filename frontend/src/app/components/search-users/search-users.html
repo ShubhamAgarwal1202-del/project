@@ -1,0 +1,29 @@
+<div class="page-layout">
+  <nav class="navbar">
+    <h1>ProfileBook</h1>
+    <a routerLink="/feed">← Back to Feed</a>
+  </nav>
+
+  <div class="container">
+    <h2>Search Users</h2>
+    <div class="search-bar">
+      <input type="text" placeholder="Search by username..." [(ngModel)]="searchQuery" (keyup.enter)="search()" />
+      <button (click)="search()">Search</button>
+    </div>
+
+    <p class="success" *ngIf="message">{{ message }}</p>
+
+    <div *ngIf="users.length === 0" class="no-results">No users found.</div>
+
+    <div class="user-card" *ngFor="let user of users">
+      <div class="user-info">
+        <span class="avatar">👤</span>
+        <div>
+          <strong>{{ user.username }}</strong>
+          <span class="role">{{ user.role }}</span>
+        </div>
+      </div>
+      <button class="report-btn" (click)="reportUser(user.userId)">🚩 Report</button>
+    </div>
+  </div>
+</div>

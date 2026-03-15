@@ -1,0 +1,17 @@
+<div class="page-layout">
+  <nav class="navbar">
+    <h1>ProfileBook</h1>
+    <div class="nav-links">
+      <a routerLink="/feed">← Back to Feed</a>
+    </div>
+  </nav>
+
+  <div class="form-container">
+    <h2>Create New Post</h2>
+    <p class="subtitle">Your post will be reviewed by an admin before appearing on the feed.</p>
+    <textarea placeholder="What's on your mind?" [(ngModel)]="content" rows="5"></textarea>
+    <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
+    <p class="success" *ngIf="successMsg">{{ successMsg }}</p>
+    <button (click)="submit()">Submit for Approval</button>
+  </div>
+</div>

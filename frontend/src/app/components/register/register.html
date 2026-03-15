@@ -1,0 +1,13 @@
+<div class="register-container">
+  <div class="register-box">
+    <h2>ProfileBook</h2>
+    <h3>Create Account</h3>
+    <input type="text" placeholder="Username" [(ngModel)]="username" />
+    <input type="password" placeholder="Password" [(ngModel)]="password" />
+    <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" />
+    <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
+    <p class="success" *ngIf="successMsg">{{ successMsg }}</p>
+    <button (click)="register()">Register</button>
+    <p>Already have an account? <a routerLink="/login">Login here</a></p>
+  </div>
+</div>

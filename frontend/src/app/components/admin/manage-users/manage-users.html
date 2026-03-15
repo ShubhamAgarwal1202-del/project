@@ -1,0 +1,55 @@
+<div class="admin-layout">
+  <nav class="navbar">
+    <h1>Manage Users</h1>
+    <a routerLink="/admin">← Dashboard</a>
+  </nav>
+
+  <div class="container">
+    <p class="success" *ngIf="message">{{ message }}</p>
+
+    <!-- Create User -->
+    <div class="card">
+      <h3>Create New User</h3>
+      <div class="form-row">
+        <input type="text" placeholder="Username" [(ngModel)]="newUser.username" />
+        <input type="password" placeholder="Password" [(ngModel)]="newUser.password" />
+        <select [(ngModel)]="newUser.role">
+          <option value="User">User</option>
+          <option value="Admin">Admin</option>
+        </select>
+        <button (click)="createUser()">Create</button>
+      </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="card">
+      <h3>All Users</h3>
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Username</th><th>Role</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.userId }}</td>
+            <td>
+              <span *ngIf="editingUser?.userId !== user.userId">{{ user.username }}</span>
+              <input *ngIf="editingUser?.userId === user.userId" [(ngModel)]="editingUser.username" />
+            </td>
+            <td>
+              <span *ngIf="editingUser?.userId !== user.userId">{{ user.role }}</span>
+              <select *ngIf="editingUser?.userId === user.userId" [(ngModel)]="editingUser.role">
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </td>
+            <td>
+              <button *ngIf="editingUser?.userId !== user.userId" class="btn-edit" (click)="startEdit(user)">Edit</button>
+              <button *ngIf="editingUser?.userId === user.userId" class="btn-save" (click)="saveEdit()">Save</button>
+              <button class="btn-delete" (click)="deleteUser(user.userId)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1877f2;
+  padding: 12px 30px;
+  color: white;
+}
+.navbar h1 { margin: 0; font-size: 1.5rem; color: white; }
+.navbar a { color: white; text-decoration: none; }
+.container { max-width: 650px; margin: 30px auto; padding: 0 15px; }
+h2 { color: #333; margin-bottom: 20px; }
+.search-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+.search-bar input {
+  flex: 1; padding: 12px;
+  border: 1px solid #ddd; border-radius: 6px; font-size: 1rem;
+}
+.search-bar button {
+  padding: 12px 20px; background: #1877f2;
+  color: white; border: none; border-radius: 6px; cursor: pointer;
+}
+.user-card {
+  display: flex; justify-content: space-between; align-items: center;
+  background: white; padding: 15px 20px; border-radius: 10px;
+  margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.user-info { display: flex; align-items: center; gap: 15px; }
+.avatar { font-size: 2rem; }
+.role { display: block; font-size: 0.8rem; color: #888; }
+.report-btn {
+  padding: 8px 15px; background: #ff4d4d;
+  color: white; border: none; border-radius: 6px; cursor: pointer;
+}
+.success { color: green; margin-bottom: 10px; }
+.no-results { color: #888; text-align: center; padding: 30px; }

@@ -1,0 +1,39 @@
+<div class="page-layout">
+  <nav class="navbar">
+    <h1>ProfileBook</h1>
+    <a routerLink="/feed">← Back to Feed</a>
+  </nav>
+
+  <div class="messages-layout">
+    <!-- User List -->
+    <div class="users-panel">
+      <h3>Users</h3>
+      <div class="user-item" *ngFor="let user of users"
+           [class.active]="selectedUser?.userId === user.userId"
+           (click)="selectUser(user)">
+        👤 {{ user.username }}
+      </div>
+    </div>
+
+    <!-- Chat Panel -->
+    <div class="chat-panel">
+      <div *ngIf="!selectedUser" class="no-chat">Select a user to start messaging</div>
+
+      <div *ngIf="selectedUser">
+        <div class="chat-header">Chat with {{ selectedUser.username }}</div>
+        <div class="messages-list">
+          <div *ngFor="let msg of conversation"
+               [class.sent]="msg.senderId === currentUserId"
+               [class.received]="msg.senderId !== currentUserId"
+               class="message-bubble">
+            {{ msg.messageContent }}
+          </div>
+        </div>
+        <div class="message-input">
+          <input type="text" placeholder="Type a message..." [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" />
+          <button (click)="sendMessage()">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

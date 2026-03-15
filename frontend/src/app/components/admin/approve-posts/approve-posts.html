@@ -1,0 +1,24 @@
+<div class="admin-layout">
+  <nav class="navbar">
+    <h1>Approve Posts</h1>
+    <a routerLink="/admin">← Dashboard</a>
+  </nav>
+
+  <div class="container">
+    <p class="success" *ngIf="message">{{ message }}</p>
+
+    <div *ngIf="posts.length === 0" class="no-items">No pending posts.</div>
+
+    <div class="post-card" *ngFor="let post of posts">
+      <div class="post-meta">
+        <span>👤 User #{{ post.userId }}</span>
+        <span class="status pending">{{ post.status }}</span>
+      </div>
+      <p>{{ post.content }}</p>
+      <div class="actions">
+        <button class="btn-approve" (click)="approve(post.postId)">✅ Approve</button>
+        <button class="btn-reject" (click)="reject(post.postId)">❌ Reject</button>
+      </div>
+    </div>
+  </div>
+</div>
