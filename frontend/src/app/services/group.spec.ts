@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
+import { GroupService } from './group';
+import { provideHttpClient } from '@angular/common/http';
 
-import { Group } from './group';
-
-describe('Group', () => {
-  let service: Group;
+describe('GroupService', () => {
+  let service: GroupService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(Group);
+    TestBed.configureTestingModule({ providers: [provideHttpClient()] });
+    service = TestBed.inject(GroupService);
   });
 
   it('should be created', () => {

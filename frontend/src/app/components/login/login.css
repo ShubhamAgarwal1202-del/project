@@ -39,3 +39,9 @@ button:hover { background: #166fe5; }
 .error { color: red; font-size: 0.9rem; }
 p { margin-top: 15px; }
 a { color: #1877f2; text-decoration: none; }
+@media (max-width: 480px) {
+  .login-box, .register-box { width: 90%; padding: 20px; }
+  .navbar { flex-direction: column; gap: 10px; }
+  .nav-links { flex-wrap: wrap; justify-content: center; }
+  .feed-container { padding: 0 10px; }
+}
