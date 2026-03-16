@@ -34,6 +34,6 @@ describe('LoginComponent', () => {
 
   it('should render login button', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('button')?.textContent).toContain('Login');
+    expect(compiled.querySelector('button')?.textContent).toContain('Log In');
   });
 });

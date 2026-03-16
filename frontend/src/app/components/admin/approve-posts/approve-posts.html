@@ -6,8 +6,11 @@
 
   <div class="container">
     <p class="success" *ngIf="message">{{ message }}</p>
+    <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
 
-    <div *ngIf="posts.length === 0" class="no-items">No pending posts.</div>
+    <div *ngIf="posts.length === 0 && !errorMsg" class="no-items">
+      No pending posts.
+    </div>
 
     <div class="post-card" *ngFor="let post of posts">
       <div class="post-meta">

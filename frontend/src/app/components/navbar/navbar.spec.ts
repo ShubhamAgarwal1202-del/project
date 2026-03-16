@@ -1,11 +1,16 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { TestBed } from '@angular/core/testing';
+import { Navbar } from './navbar';
+import { RouterTestingModule } from '@angular/router/testing';
 
-@Component({
-  selector: 'app-navbar',
-  standalone: true,
-  imports: [RouterLink],
-  templateUrl: './navbar.html',
-  styleUrl: './navbar.css'
-})
-export class Navbar {}
+describe('Navbar', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Navbar, RouterTestingModule]
+    }).compileComponents();
+  });
+
+  it('should create', () => {
+    const fixture = TestBed.createComponent(Navbar);
+    expect(fixture.componentInstance).toBeTruthy();
+  });
+});

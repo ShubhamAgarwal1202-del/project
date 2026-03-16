@@ -10,8 +10,8 @@
 
     <div class="report-card" *ngFor="let report of reports">
       <div class="report-info">
-        <p><strong>Reported User ID:</strong> {{ report.reportedUserId }}</p>
-        <p><strong>Reported By:</strong> User #{{ report.reportingUserId }}</p>
+        <p><strong>Reported User:</strong> {{ getUsername(report.reportedUserId) }}</p>
+        <p><strong>Reported By:</strong> {{ getUsername(report.reportingUserId) }}</p>
         <p><strong>Reason:</strong> {{ report.reason }}</p>
         <p class="timestamp">{{ report.timestamp | date:'medium' }}</p>
       </div>

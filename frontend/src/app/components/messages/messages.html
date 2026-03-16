@@ -8,6 +8,8 @@
     <!-- User List -->
     <div class="users-panel">
       <h3>Users</h3>
+      <p *ngIf="errorMsg" style="color:red; font-size:0.8rem;">{{ errorMsg }}</p>
+      <p *ngIf="users.length === 0 && !errorMsg" style="color:#888; font-size:0.85rem;">No users found.</p>
       <div class="user-item" *ngFor="let user of users"
            [class.active]="selectedUser?.userId === user.userId"
            (click)="selectUser(user)">
@@ -19,7 +21,7 @@
     <div class="chat-panel">
       <div *ngIf="!selectedUser" class="no-chat">Select a user to start messaging</div>
 
-      <div *ngIf="selectedUser">
+      <div *ngIf="selectedUser" style="display:flex; flex-direction:column; height:100%;">
         <div class="chat-header">Chat with {{ selectedUser.username }}</div>
         <div class="messages-list">
           <div *ngFor="let msg of conversation"
@@ -30,7 +32,9 @@
           </div>
         </div>
         <div class="message-input">
-          <input type="text" placeholder="Type a message..." [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" />
+          <input type="text" placeholder="Type a message..."
+                 [(ngModel)]="newMessage"
+                 (keyup.enter)="sendMessage()" />
           <button (click)="sendMessage()">Send</button>
         </div>
       </div>

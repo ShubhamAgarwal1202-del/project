@@ -35,6 +35,14 @@ export class PostService {
   }
 
   getLikeCount(postId: number): Observable<any> {
-    return this.http.get(`${this.likeUrl}/likes/${postId}`, { headers: this.getHeaders() });
+  return this.http.get(`${this.likeUrl}/likes/${postId}`, { headers: this.getHeaders() });
+  }
+
+  unlikePost(postId: number, userId: number): Observable<any> {
+    return this.http.delete(`${this.likeUrl}/unlike`, { 
+      body: { postId, userId }, 
+      headers: this.getHeaders(), 
+      responseType: 'text' 
+    });
   }
 }

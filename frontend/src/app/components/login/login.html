@@ -1,11 +1,31 @@
-<div class="login-container">
-  <div class="login-box">
-    <h2>ProfileBook</h2>
-    <h3>Login</h3>
-    <input type="text" placeholder="Username" [(ngModel)]="username" />
-    <input type="password" placeholder="Password" [(ngModel)]="password" />
-    <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
-    <button (click)="login()">Login</button>
-    <p>Don't have an account? <a routerLink="/register">Register here</a></p>
+<div class="login-page">
+  <!-- Left Side -->
+  <div class="left-side">
+    <div class="brand">
+      <div class="logo">📖</div>
+      <h1>ProfileBook</h1>
+      <p>Connect with friends and the world around you on ProfileBook.</p>
+    </div>
+    <div class="features">
+      <div class="feature-item">📝 Share posts and stories</div>
+      <div class="feature-item">💬 Message your friends</div>
+      <div class="feature-item">👍 Like and comment on posts</div>
+      <div class="feature-item">🔍 Discover new people</div>
+    </div>
+  </div>
+
+  <!-- Right Side -->
+  <div class="right-side">
+    <div class="login-box">
+      <h2>Log In</h2>
+      <input type="text" placeholder="Username" [(ngModel)]="username" />
+      <input type="password" placeholder="Password" [(ngModel)]="password" />
+      <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
+      <button class="btn-login" (click)="login()">Log In</button>
+      <div class="divider"><span>or</span></div>
+      <a routerLink="/register">
+        <button class="btn-register">Create New Account</button>
+      </a>
+    </div>
   </div>
 </div>

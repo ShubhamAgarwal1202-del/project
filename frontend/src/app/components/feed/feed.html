@@ -1,45 +1,139 @@
-<div class="feed-layout">
-  <!-- Navbar -->
-  <nav class="navbar">
-    <h1>ProfileBook</h1>
-    <div class="nav-links">
-      <span>Welcome, {{ username }}!</span>
-      <a routerLink="/create-post">+ Create Post</a>
-      <a routerLink="/messages">Messages</a>
-      <a routerLink="/search">Search Users</a>
-      <button (click)="logout()">Logout</button>
+<div class="fb-layout">
+
+  <!-- TOP NAVBAR -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <div class="nav-logo">📖</div>
+      <input type="text" placeholder="Search ProfileBook..." class="search-bar" />
+    </div>
+    <div class="nav-center">
+      <a routerLink="/feed" class="nav-icon active" title="Home">🏠</a>
+      <a routerLink="/messages" class="nav-icon" title="Messages">💬</a>
+      <a routerLink="/search" class="nav-icon" title="Search Users">🔍</a>
+    </div>
+    <div class="nav-right">
+      <a routerLink="/create-post" class="nav-btn">+ Post</a>
+      <div class="user-avatar" title="{{ username }}">{{ username[0]?.toUpperCase() }}</div>
+      <button class="logout-btn" (click)="logout()">Logout</button>
     </div>
   </nav>
 
-  <!-- Posts -->
-  <div class="feed-container">
-    <h2>Recent Posts</h2>
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
 
-    <div *ngIf="posts.length === 0" class="no-posts">
-      No posts yet. Be the first to post!
+    <!-- LEFT SIDEBAR -->
+    <div class="left-sidebar">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">{{ username[0]?.toUpperCase() }}</div>
+        <span>{{ username }}</span>
+      </div>
+      <hr class="divider" />
+      <a routerLink="/feed" class="sidebar-item">🏠 Home</a>
+      <a routerLink="/create-post" class="sidebar-item">📝 Create Post</a>
+      <a routerLink="/messages" class="sidebar-item">💬 Messages</a>
+      <a routerLink="/search" class="sidebar-item">🔍 Search Users</a>
+      <hr class="divider" />
+      <div class="sidebar-item" (click)="logout()" style="cursor:pointer; color:#e74c3c;">🚪 Logout</div>
     </div>
 
-    <div class="post-card" *ngFor="let post of posts">
-      <div class="post-header">
-        <span class="post-author">👤 User #{{ post.userId }}</span>
-      </div>
-      <p class="post-content">{{ post.content }}</p>
-      <img *ngIf="post.postImage" [src]="post.postImage" class="post-image" />
-      <div class="post-actions">
-        <button (click)="likePost(post.postId)">👍 Like</button>
-        <button (click)="toggleComments(post.postId)">💬 Comments</button>
+    <!-- CENTER FEED -->
+    <div class="center-feed">
+
+      <!-- Create Post Box -->
+      <div class="create-post-box">
+        <div class="create-post-top">
+          <div class="small-avatar">{{ username[0]?.toUpperCase() }}</div>
+          <a routerLink="/create-post" class="create-post-input">What's on your mind, {{ username }}?</a>
+        </div>
+        <hr />
+        <div class="create-post-actions">
+          <a routerLink="/create-post" class="action-btn">📷 Photo</a>
+          <a routerLink="/create-post" class="action-btn">📝 Write Post</a>
+        </div>
       </div>
 
-      <!-- Comments Section -->
-      <div *ngIf="postComments[post.postId]" class="comments-section">
-        <div *ngFor="let comment of postComments[post.postId]" class="comment">
-          <strong>User #{{ comment.userId }}:</strong> {{ comment.content }}
+      <!-- No Posts -->
+      <div *ngIf="posts.length === 0" class="no-posts">
+        <div class="no-posts-icon">📭</div>
+        <p>No posts yet. Be the first to post!</p>
+        <a routerLink="/create-post" class="create-btn">Create Post</a>
+      </div>
+
+      <!-- Post Cards -->
+      <div class="post-card" *ngFor="let post of posts">
+        <div class="post-header">
+          <div class="post-avatar">{{ post.username ? post.username[0].toUpperCase() : 'U' }}</div>
+          <div class="post-meta">
+            <strong>{{ post.username }}</strong>
+            <span class="post-time">📍 ProfileBook</span>
+          </div>
         </div>
-        <div class="add-comment">
-          <input type="text" placeholder="Write a comment..." [(ngModel)]="commentTexts[post.postId]" />
-          <button (click)="addComment(post.postId)">Post</button>
+        <p class="post-content">{{ post.content }}</p>
+        <img *ngIf="post.postImage" [src]="post.postImage" class="post-image" />
+        <hr class="post-divider" />
+
+        <!-- Like count row -->
+        <div class="like-summary" *ngIf="likeCounts[post.postId] > 0">
+          <span>👍 {{ likeCounts[post.postId] }} {{ likeCounts[post.postId] === 1 ? 'person' : 'people' }} liked this</span>
         </div>
+
+        <div class="post-actions">
+          <button (click)="likePost(post.postId)"
+                  class="action-button"
+                  [class.liked]="likedPosts[post.postId]">
+            {{ likedPosts[post.postId] ? '💙 Unlike' : '👍 Like' }}
+          </button>
+          <button (click)="toggleComments(post.postId)" class="action-button">
+            💬 Comment
+          </button>
+          <button class="action-button">↗️ Share</button>
+        </div>
+
+        <!-- Comments Section -->
+        <div *ngIf="postComments[post.postId]" class="comments-section">
+          <div *ngFor="let comment of postComments[post.postId]" class="comment-item">
+            <div class="comment-avatar">
+              {{ comment.username ? comment.username[0].toUpperCase() : 'U' }}
+            </div>
+            <div class="comment-bubble">
+              <strong>{{ comment.username || 'User #' + comment.userId }}</strong>
+              <p>{{ comment.content }}</p>
+            </div>
+          </div>
+          <div class="add-comment">
+            <div class="small-avatar">{{ username[0]?.toUpperCase() }}</div>
+            <input type="text" placeholder="Write a comment..."
+                   [(ngModel)]="commentTexts[post.postId]"
+                   (keyup.enter)="addComment(post.postId)" />
+            <button (click)="addComment(post.postId)">➤</button>
+          </div>
+        </div>
+
       </div>
     </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="right-sidebar">
+      <div class="right-section">
+        <h4>Your Profile</h4>
+        <div class="profile-card">
+          <div class="profile-avatar-big">{{ username[0]?.toUpperCase() }}</div>
+          <div>
+            <strong>{{ username }}</strong>
+            <p>ProfileBook Member</p>
+          </div>
+        </div>
+      </div>
+      <hr class="divider" />
+      <div class="right-section">
+        <h4>Quick Links</h4>
+        <a routerLink="/create-post" class="quick-link">📝 Create Post</a>
+        <a routerLink="/messages" class="quick-link">💬 Messages</a>
+        <a routerLink="/search" class="quick-link">🔍 Find Friends</a>
+      </div>
+      <hr class="divider" />
+      <p class="footer-text">© 2026 ProfileBook</p>
+    </div>
+
   </div>
 </div>
