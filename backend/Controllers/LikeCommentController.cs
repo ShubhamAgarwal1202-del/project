@@ -61,16 +61,27 @@ namespace backend.Controllers
         }
 
         // GET: api/likecomment/comments/5
+        // GET: api/likecomment/comments/5
         [HttpGet("comments/{postId}")]
         public async Task<IActionResult> GetComments(int postId)
         {
             var comments = await _context.Comments
                 .Where(c => c.PostId == postId)
+                .Join(_context.Users,
+                    comment => comment.UserId,
+                    user => user.UserId,
+                    (comment, user) => new {
+                        comment.CommentId,
+                        comment.PostId,
+                        comment.UserId,
+                        Username = user.Username,
+                        comment.Content,
+                        comment.Timestamp
+                    })
                 .OrderByDescending(c => c.Timestamp)
                 .ToListAsync();
             return Ok(comments);
         }
-
         // DELETE: api/likecomment/comment/delete/5
         [HttpDelete("comment/delete/{id}")]
         public async Task<IActionResult> DeleteComment(int id)

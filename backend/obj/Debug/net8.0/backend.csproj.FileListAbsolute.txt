@@ -138,3 +138,4 @@ C:\Users\KIIT\Desktop\Capstone\ProfileBook\backend\obj\Debug\net8.0\refint\backe
 C:\Users\KIIT\Desktop\Capstone\ProfileBook\backend\obj\Debug\net8.0\backend.pdb
 C:\Users\KIIT\Desktop\Capstone\ProfileBook\backend\obj\Debug\net8.0\backend.genruntimeconfig.cache
 C:\Users\KIIT\Desktop\Capstone\ProfileBook\backend\obj\Debug\net8.0\ref\backend.dll
+C:\Users\KIIT\Desktop\Capstone\ProfileBook\backend\obj\Debug\net8.0\backend.sourcelink.json

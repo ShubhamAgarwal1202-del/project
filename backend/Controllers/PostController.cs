@@ -32,7 +32,17 @@ namespace backend.Controllers
         {
             var posts = await _context.Posts
                 .Where(p => p.Status == "Approved")
-                .Include(p => p.User)
+                .Join(_context.Users,
+                    post => post.UserId,
+                    user => user.UserId,
+                    (post, user) => new {
+                        post.PostId,
+                        post.UserId,
+                        Username = user.Username,
+                        post.Content,
+                        post.PostImage,
+                        post.Status
+                    })
                 .ToListAsync();
             return Ok(posts);
         }
@@ -43,7 +53,13 @@ namespace backend.Controllers
         {
             var posts = await _context.Posts
                 .Where(p => p.Status == "Pending")
-                .Include(p => p.User)
+                .Select(p => new {
+                    p.PostId,
+                    p.UserId,
+                    p.Content,
+                    p.PostImage,
+                    p.Status
+                })
                 .ToListAsync();
             return Ok(posts);
         }
@@ -54,7 +70,6 @@ namespace backend.Controllers
         {
             var post = await _context.Posts.FindAsync(id);
             if (post == null) return NotFound("Post not found.");
-
             post.Status = "Approved";
             await _context.SaveChangesAsync();
             return Ok("Post approved.");
@@ -66,7 +81,6 @@ namespace backend.Controllers
         {
             var post = await _context.Posts.FindAsync(id);
             if (post == null) return NotFound("Post not found.");
-
             post.Status = "Rejected";
             await _context.SaveChangesAsync();
             return Ok("Post rejected.");
@@ -78,7 +92,6 @@ namespace backend.Controllers
         {
             var post = await _context.Posts.FindAsync(id);
             if (post == null) return NotFound("Post not found.");
-
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
             return Ok("Post deleted.");
