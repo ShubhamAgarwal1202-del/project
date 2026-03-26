@@ -22,6 +22,32 @@ namespace backend.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("backend.Models.Comment", b =>
                 {
                     b.Property<int>("CommentId")
@@ -45,7 +71,35 @@ namespace backend.Migrations
 
                     b.HasKey("CommentId");
 
+                    b.HasIndex("PostId");
+
                     b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("backend.Models.Friendship", b =>
+                {
+                    b.Property<int>("FriendshipId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FriendshipId"));
+
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RequesterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FriendshipId");
+
+                    b.HasIndex("RequesterId", "ReceiverId")
+                        .IsUnique();
+
+                    b.ToTable("Friendships");
                 });
 
             modelBuilder.Entity("backend.Models.Group", b =>
@@ -85,6 +139,9 @@ namespace backend.Migrations
 
                     b.HasKey("LikeId");
 
+                    b.HasIndex("PostId", "UserId")
+                        .IsUnique();
+
                     b.ToTable("Likes");
                 });
 
@@ -111,6 +168,8 @@ namespace backend.Migrations
 
                     b.HasKey("MessageId");
 
+                    b.HasIndex("SenderId", "ReceiverId");
+
                     b.ToTable("Messages");
                 });
 
@@ -131,12 +190,14 @@ namespace backend.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("PostId");
+
+                    b.HasIndex("Status");
 
                     b.HasIndex("UserId");
 
@@ -190,9 +251,12 @@ namespace backend.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserId");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });

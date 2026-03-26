@@ -1,0 +1,53 @@
+.navbar {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #1877f2; padding: 12px 30px; color: white;
+}
+.navbar h1 { margin: 0; font-size: 1.5rem; }
+.nav-links { display: flex; gap: 20px; }
+.nav-links a { color: white; text-decoration: none; font-size: 0.95rem; }
+
+.container { max-width: 680px; margin: 30px auto; padding: 0 15px; }
+
+.section { margin-bottom: 35px; }
+.section h2 { color: #333; margin-bottom: 15px; font-size: 1.3rem; }
+
+.request-card, .friend-card {
+  display: flex; justify-content: space-between; align-items: center;
+  background: white; padding: 14px 18px; border-radius: 10px;
+  margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.user-info { display: flex; align-items: center; gap: 12px; }
+.avatar-circle {
+  width: 42px; height: 42px; background: #1877f2; color: white;
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-weight: bold; font-size: 1.1rem;
+}
+
+.btn-group { display: flex; gap: 8px; }
+
+.btn-accept {
+  padding: 8px 16px; background: #1877f2; color: white;
+  border: none; border-radius: 6px; cursor: pointer; font-weight: 600;
+}
+.btn-accept:hover { background: #166fe5; }
+
+.btn-reject {
+  padding: 8px 16px; background: #e4e6eb; color: #333;
+  border: none; border-radius: 6px; cursor: pointer; font-weight: 600;
+}
+.btn-reject:hover { background: #d8dadf; }
+
+.btn-unfriend {
+  padding: 7px 14px; background: #fff0f0; color: #e74c3c;
+  border: 1px solid #fcc; border-radius: 6px; cursor: pointer;
+}
+
+.error {
+  color: #e74c3c;
+  margin-bottom: 10px;
+}
+
+.success { color: green; margin-bottom: 15px; font-size: 0.95rem; }
+.empty { color: #888; padding: 20px 0; font-size: 0.95rem; }
+.empty a { color: #1877f2; text-decoration: none; }

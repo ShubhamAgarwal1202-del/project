@@ -1,26 +1,21 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AuthService } from './auth';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class MessageService {
   private apiUrl = 'http://localhost:5209/api/Message';
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
-
-  private getHeaders() {
-    return new HttpHeaders({ Authorization: `Bearer ${this.authService.getToken()}` });
-  }
+  constructor(private http: HttpClient) {}
 
   sendMessage(data: any) {
-    return this.http.post(`${this.apiUrl}/send`, data, { headers: this.getHeaders(), responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/send`, data, { responseType: 'text' });
   }
 
   getConversation(senderId: number, receiverId: number) {
-    return this.http.get(`${this.apiUrl}/conversation?senderId=${senderId}&receiverId=${receiverId}`, { headers: this.getHeaders() });
+    return this.http.get(`${this.apiUrl}/conversation?senderId=${senderId}&receiverId=${receiverId}`);
   }
 
   getInbox(userId: number) {
-    return this.http.get(`${this.apiUrl}/inbox/${userId}`, { headers: this.getHeaders() });
+    return this.http.get(`${this.apiUrl}/inbox/${userId}`);
   }
 }

@@ -13,6 +13,8 @@ import { ManageGroups } from './components/admin/manage-groups/manage-groups';
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from './services/auth';
+import { FriendRequests } from './components/friend-requests/friend-requests';
+import { NotificationsComponent } from './components/notifications/notifications';
 
 export const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
@@ -43,4 +45,6 @@ export const routes: Routes = [
   { path: 'admin/posts', component: ApprovePosts, canActivate: [adminGuard] },
   { path: 'admin/reported', component: ReportedUsers, canActivate: [adminGuard] },
   { path: 'admin/groups', component: ManageGroups, canActivate: [adminGuard] },
+  { path: 'friend-requests', component: FriendRequests, canActivate: [authGuard] },
+  { path: 'notifications', component: NotificationsComponent },
 ];

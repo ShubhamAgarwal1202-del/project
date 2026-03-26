@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using backend.Data;
@@ -7,6 +8,7 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class GroupController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -18,6 +20,7 @@ namespace backend.Controllers
 
         // POST: api/group/create
         [HttpPost("create")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateGroup([FromBody] Group group)
         {
             _context.Groups.Add(group);
@@ -35,11 +38,11 @@ namespace backend.Controllers
 
         // DELETE: api/group/delete/5
         [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteGroup(int id)
         {
             var group = await _context.Groups.FindAsync(id);
             if (group == null) return NotFound("Group not found.");
-
             _context.Groups.Remove(group);
             await _context.SaveChangesAsync();
             return Ok("Group deleted.");

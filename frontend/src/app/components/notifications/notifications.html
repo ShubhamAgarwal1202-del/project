@@ -1,0 +1,9 @@
+<h2>🔔 Notifications</h2>
+
+<div *ngFor="let n of notifications" class="notification">
+  {{ n.message }}
+</div>
+
+<div *ngIf="notifications.length === 0">
+  No notifications yet
+</div>

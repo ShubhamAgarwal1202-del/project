@@ -23,66 +23,91 @@ namespace backend.Controllers
             _config = config;
         }
 
-        // POST: api/auth/register
+        // ========================= REGISTER =========================
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDTO dto)
         {
-            // Check if username already exists
-            if (await _context.Users.AnyAsync(u => u.Username == dto.Username))
-                return BadRequest("Username already exists.");
-
-            var user = new User
+            try
             {
-                Username = dto.Username,
-                Password = dto.Password, // plain text for now
-                Role = dto.Role
-            };
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+                // Check if username exists
+                if (await _context.Users.AnyAsync(u => u.Username == dto.Username))
+                    return BadRequest("Username already exists.");
 
-            return Ok("User registered successfully.");
+                var user = new User
+                {
+                    Username = dto.Username,
+                    Password = BCrypt.Net.BCrypt.HashPassword(dto.Password), // 🔐 HASHED
+                    Role = "User"
+                };
+
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+
+                return Ok("User registered successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
         }
 
-        // POST: api/auth/login
+        // ========================= LOGIN =========================
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO dto)
         {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Username == dto.Username && u.Password == dto.Password);
-
-            if (user == null)
-                return Unauthorized("Invalid username or password.");
-
-            var token = GenerateJwtToken(user);
-
-            return Ok(new
+            try
             {
-                token,
-                userId = user.UserId,
-                username = user.Username,
-                role = user.Role
-            });
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Username == dto.Username);
+
+                if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
+                    return Unauthorized("Invalid username or password.");
+
+                var token = GenerateJwtToken(user);
+
+                return Ok(new
+                {
+                    token,
+                    userId = user.UserId,
+                    username = user.Username,
+                    role = user.Role
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
         }
 
+        // ========================= JWT GENERATION =========================
         private string GenerateJwtToken(User user)
         {
+            // 🔑 Claims (VERY IMPORTANT)
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()), // REQUIRED
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Role, user.Role)
             };
 
-            var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+            var keyString = _config["Jwt:Key"];
+            if (string.IsNullOrEmpty(keyString))
+                throw new Exception("JWT Key is missing in configuration.");
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddDays(7),
+                expires: DateTime.Now.AddHours(1), // ⏱ 1 hour expiry
                 signingCredentials: creds
             );
 

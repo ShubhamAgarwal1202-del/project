@@ -5,5 +5,8 @@
     <a routerLink="/create-post">+ Create Post</a>
     <a routerLink="/messages">Messages</a>
     <a routerLink="/search">Search Users</a>
+    <a routerLink="/notifications" class="nav-icon">
+  🔔 <span *ngIf="unreadCount > 0">({{ unreadCount }})</span>
+</a>
   </div>
 </nav>

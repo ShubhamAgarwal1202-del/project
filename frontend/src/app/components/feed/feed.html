@@ -4,12 +4,17 @@
   <nav class="top-nav">
     <div class="nav-left">
       <div class="nav-logo">📖</div>
-      <input type="text" placeholder="Search ProfileBook..." class="search-bar" />
+      <input type="text" placeholder="Search posts..." class="search-bar"
+             [(ngModel)]="searchKeyword" (input)="filterPosts()" />
     </div>
     <div class="nav-center">
       <a routerLink="/feed" class="nav-icon active" title="Home">🏠</a>
       <a routerLink="/messages" class="nav-icon" title="Messages">💬</a>
       <a routerLink="/search" class="nav-icon" title="Search Users">🔍</a>
+      <a routerLink="/notifications" class="nav-icon">
+  🔔 <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
+</a>
+      <a routerLink="/friend-requests" class="nav-icon" title="Friend Requests">👥</a>
     </div>
     <div class="nav-right">
       <a routerLink="/create-post" class="nav-btn">+ Post</a>
@@ -32,6 +37,7 @@
       <a routerLink="/create-post" class="sidebar-item">📝 Create Post</a>
       <a routerLink="/messages" class="sidebar-item">💬 Messages</a>
       <a routerLink="/search" class="sidebar-item">🔍 Search Users</a>
+      <a routerLink="/friend-requests" class="sidebar-item">👥 Friend Requests</a>
       <hr class="divider" />
       <div class="sidebar-item" (click)="logout()" style="cursor:pointer; color:#e74c3c;">🚪 Logout</div>
     </div>
@@ -53,14 +59,20 @@
       </div>
 
       <!-- No Posts -->
-      <div *ngIf="posts.length === 0" class="no-posts">
+      <div *ngIf="filteredPosts.length === 0 && posts.length === 0" class="no-posts">
         <div class="no-posts-icon">📭</div>
         <p>No posts yet. Be the first to post!</p>
         <a routerLink="/create-post" class="create-btn">Create Post</a>
       </div>
 
+      <!-- No search results -->
+      <div *ngIf="filteredPosts.length === 0 && posts.length > 0" class="no-posts">
+        <div class="no-posts-icon">🔍</div>
+        <p>No posts match "{{ searchKeyword }}"</p>
+      </div>
+
       <!-- Post Cards -->
-      <div class="post-card" *ngFor="let post of posts">
+      <div class="post-card" *ngFor="let post of filteredPosts">
         <div class="post-header">
           <div class="post-avatar">{{ post.username ? post.username[0].toUpperCase() : 'U' }}</div>
           <div class="post-meta">
@@ -130,6 +142,7 @@
         <a routerLink="/create-post" class="quick-link">📝 Create Post</a>
         <a routerLink="/messages" class="quick-link">💬 Messages</a>
         <a routerLink="/search" class="quick-link">🔍 Find Friends</a>
+        <a routerLink="/friend-requests" class="quick-link">👥 Friend Requests</a>
       </div>
       <hr class="divider" />
       <p class="footer-text">© 2026 ProfileBook</p>

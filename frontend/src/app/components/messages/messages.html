@@ -5,24 +5,40 @@
   </nav>
 
   <div class="messages-layout">
-    <!-- User List -->
+    <!-- Friends List Panel -->
     <div class="users-panel">
-      <h3>Users</h3>
-      <p *ngIf="errorMsg" style="color:red; font-size:0.8rem;">{{ errorMsg }}</p>
-      <p *ngIf="users.length === 0 && !errorMsg" style="color:#888; font-size:0.85rem;">No users found.</p>
+      <h3>Messages</h3>
+
+      <a routerLink="/search" class="find-friends-btn">+ Find Friends</a>
+
+      <p *ngIf="errorMsg" style="color:red; font-size:0.8rem; margin-top:10px;">{{ errorMsg }}</p>
+
+      <p *ngIf="users.length === 0 && !errorMsg" class="no-friends-msg">
+        No friends yet.<br/>
+        <a routerLink="/search">Find people to add</a>
+      </p>
+
       <div class="user-item" *ngFor="let user of users"
            [class.active]="selectedUser?.userId === user.userId"
            (click)="selectUser(user)">
-        👤 {{ user.username }}
+        <div class="user-avatar-sm">{{ user.username?.[0]?.toUpperCase() }}</div>
+        <span>{{ user.username }}</span>
       </div>
     </div>
 
     <!-- Chat Panel -->
     <div class="chat-panel">
-      <div *ngIf="!selectedUser" class="no-chat">Select a user to start messaging</div>
+      <div *ngIf="!selectedUser" class="no-chat">
+        <div>💬</div>
+        <p>Select a friend to start chatting</p>
+      </div>
 
       <div *ngIf="selectedUser" style="display:flex; flex-direction:column; height:100%;">
-        <div class="chat-header">Chat with {{ selectedUser.username }}</div>
+        <div class="chat-header">
+          <div class="user-avatar-sm">{{ selectedUser.username?.[0]?.toUpperCase() }}</div>
+          {{ selectedUser.username }}
+        </div>
+
         <div class="messages-list">
           <div *ngFor="let msg of conversation"
                [class.sent]="msg.senderId === currentUserId"
@@ -31,6 +47,7 @@
             {{ msg.messageContent }}
           </div>
         </div>
+
         <div class="message-input">
           <input type="text" placeholder="Type a message..."
                  [(ngModel)]="newMessage"

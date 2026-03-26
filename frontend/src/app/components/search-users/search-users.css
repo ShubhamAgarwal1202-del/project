@@ -1,15 +1,13 @@
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #1877f2;
-  padding: 12px 30px;
-  color: white;
+  display: flex; justify-content: space-between; align-items: center;
+  background: #1877f2; padding: 12px 30px; color: white;
 }
 .navbar h1 { margin: 0; font-size: 1.5rem; color: white; }
-.navbar a { color: white; text-decoration: none; }
+.nav-links { display: flex; gap: 20px; }
+.nav-links a { color: white; text-decoration: none; font-size: 0.95rem; }
 .container { max-width: 650px; margin: 30px auto; padding: 0 15px; }
 h2 { color: #333; margin-bottom: 20px; }
+
 .search-bar { display: flex; gap: 10px; margin-bottom: 20px; }
 .search-bar input {
   flex: 1; padding: 12px;
@@ -19,17 +17,35 @@ h2 { color: #333; margin-bottom: 20px; }
   padding: 12px 20px; background: #1877f2;
   color: white; border: none; border-radius: 6px; cursor: pointer;
 }
+
 .user-card {
   display: flex; justify-content: space-between; align-items: center;
   background: white; padding: 15px 20px; border-radius: 10px;
   margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 .user-info { display: flex; align-items: center; gap: 15px; }
-.avatar { font-size: 2rem; }
-.role { display: block; font-size: 0.8rem; color: #888; }
-.report-btn {
-  padding: 8px 15px; background: #ff4d4d;
-  color: white; border: none; border-radius: 6px; cursor: pointer;
+.avatar-circle {
+  width: 44px; height: 44px; background: #1877f2; color: white;
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-weight: bold; font-size: 1.1rem;
 }
-.success { color: green; margin-bottom: 10px; }
-.no-results { color: #888; text-align: center; padding: 30px; }
+.role { display: block; font-size: 0.8rem; color: #888; margin-top: 2px; }
+
+.action-btns { display: flex; gap: 8px; align-items: center; }
+
+.friend-btn {
+  padding: 8px 16px; background: #1877f2; color: white;
+  border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem;
+  font-weight: 600; transition: background 0.2s;
+}
+.friend-btn:hover { background: #166fe5; }
+.friend-btn.pending { background: #e4e6eb; color: #606770; }
+.friend-btn.accepted { background: #e7f3ff; color: #1877f2; border: 1px solid #1877f2; }
+.friend-btn:disabled { cursor: default; }
+
+.report-btn {
+  padding: 8px 10px; background: #fff0f0;
+  color: #e74c3c; border: 1px solid #fcc; border-radius: 6px; cursor: pointer;
+}
+.success { color: green; margin-bottom: 10px; font-size: 0.95rem; }
+.no-results { color: #888; text-align: center; padding: 40px; }

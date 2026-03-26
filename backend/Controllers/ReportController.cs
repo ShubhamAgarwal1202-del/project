@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using backend.Data;
@@ -7,6 +8,7 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ReportController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -28,6 +30,7 @@ namespace backend.Controllers
 
         // GET: api/report/all
         [HttpGet("all")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllReports()
         {
             var reports = await _context.Reports
@@ -38,11 +41,11 @@ namespace backend.Controllers
 
         // DELETE: api/report/delete/5
         [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteReport(int id)
         {
             var report = await _context.Reports.FindAsync(id);
             if (report == null) return NotFound("Report not found.");
-
             _context.Reports.Remove(report);
             await _context.SaveChangesAsync();
             return Ok("Report deleted.");

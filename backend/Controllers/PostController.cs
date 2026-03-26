@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using backend.Data;
@@ -7,6 +8,7 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class PostController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -49,6 +51,7 @@ namespace backend.Controllers
 
         // GET: api/post/pending
         [HttpGet("pending")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetPendingPosts()
         {
             var posts = await _context.Posts
@@ -64,8 +67,30 @@ namespace backend.Controllers
             return Ok(posts);
         }
 
+        // GET: api/post/search?keyword=hello
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchPosts([FromQuery] string keyword)
+        {
+            var posts = await _context.Posts
+                .Where(p => p.Status == "Approved" && p.Content.Contains(keyword))
+                .Join(_context.Users,
+                    post => post.UserId,
+                    user => user.UserId,
+                    (post, user) => new {
+                        post.PostId,
+                        post.UserId,
+                        Username = user.Username,
+                        post.Content,
+                        post.PostImage,
+                        post.Status
+                    })
+                .ToListAsync();
+            return Ok(posts);
+        }
+
         // PUT: api/post/approve/5
         [HttpPut("approve/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ApprovePost(int id)
         {
             var post = await _context.Posts.FindAsync(id);
@@ -77,6 +102,7 @@ namespace backend.Controllers
 
         // PUT: api/post/reject/5
         [HttpPut("reject/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RejectPost(int id)
         {
             var post = await _context.Posts.FindAsync(id);
@@ -88,6 +114,7 @@ namespace backend.Controllers
 
         // DELETE: api/post/delete/5
         [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeletePost(int id)
         {
             var post = await _context.Posts.FindAsync(id);

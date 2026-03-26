@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MessageService } from '../../services/message';
-import { UserService } from '../../services/user';
+import { FriendshipService } from '../../services/friendship';
 import { AuthService } from '../../services/auth';
 
 @Component({
@@ -23,24 +23,25 @@ export class Messages implements OnInit {
 
   constructor(
     private messageService: MessageService,
-    private userService: UserService,
+    private friendshipService: FriendshipService,
     private authService: AuthService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.currentUserId = this.authService.getUserId();
-    this.loadUsers();
+    this.loadFriends();
   }
 
-  loadUsers() {
-    this.userService.getAllUsers().subscribe({
+  loadFriends() {
+    // Only load friends — not all users
+    this.friendshipService.getFriends(this.currentUserId).subscribe({
       next: (res: any) => {
-        this.users = [...res.filter((u: any) => u.userId !== this.currentUserId && u.role !== 'Admin')];
+        this.users = res;
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        this.errorMsg = 'Failed to load users: ' + err.status;
+      error: () => {
+        this.errorMsg = 'Could not load friends.';
         this.cdr.detectChanges();
       }
     });
@@ -53,11 +54,10 @@ export class Messages implements OnInit {
 
   loadConversation() {
     this.messageService.getConversation(this.currentUserId, this.selectedUser.userId).subscribe({
-      next: (res: any) => { 
-        this.conversation = [...res]; 
+      next: (res: any) => {
+        this.conversation = [...res];
         this.cdr.detectChanges();
-      },
-      error: (err) => { console.log('Conversation error:', err); }
+      }
     });
   }
 
@@ -69,11 +69,10 @@ export class Messages implements OnInit {
       messageContent: this.newMessage
     };
     this.messageService.sendMessage(msg).subscribe({
-      next: () => { 
-        this.newMessage = ''; 
-        this.loadConversation(); 
-      },
-      error: (err) => { console.log('Send error:', err); }
+      next: () => {
+        this.newMessage = '';
+        this.loadConversation();
+      }
     });
   }
 }

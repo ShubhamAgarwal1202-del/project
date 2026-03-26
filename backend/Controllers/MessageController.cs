@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using backend.Data;
@@ -7,6 +8,7 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class MessageController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -36,7 +38,6 @@ namespace backend.Controllers
                     (m.SenderId == receiverId && m.ReceiverId == senderId))
                 .OrderBy(m => m.Timestamp)
                 .ToListAsync();
-
             return Ok(messages);
         }
 
@@ -48,7 +49,6 @@ namespace backend.Controllers
                 .Where(m => m.ReceiverId == userId)
                 .OrderByDescending(m => m.Timestamp)
                 .ToListAsync();
-
             return Ok(messages);
         }
     }

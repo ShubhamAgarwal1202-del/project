@@ -1,29 +1,48 @@
 <div class="page-layout">
   <nav class="navbar">
     <h1>ProfileBook</h1>
-    <a routerLink="/feed">← Back to Feed</a>
+    <div class="nav-links">
+      <a routerLink="/feed">← Feed</a>
+      <a routerLink="/friend-requests">Friend Requests</a>
+    </div>
   </nav>
 
   <div class="container">
-    <h2>Search Users</h2>
+    <h2>Find People</h2>
     <div class="search-bar">
-      <input type="text" placeholder="Search by username..." [(ngModel)]="searchQuery" (keyup.enter)="search()" />
+      <input type="text" placeholder="Search by username..."
+             [(ngModel)]="searchQuery" (keyup.enter)="search()" />
       <button (click)="search()">Search</button>
     </div>
 
     <p class="success" *ngIf="message">{{ message }}</p>
 
-    <div *ngIf="users.length === 0" class="no-results">No users found.</div>
+    <div *ngIf="users.length === 0" class="no-results">
+      Search for someone to connect with.
+    </div>
 
     <div class="user-card" *ngFor="let user of users">
       <div class="user-info">
-        <span class="avatar">👤</span>
+        <div class="avatar-circle">{{ user.username[0]?.toUpperCase() }}</div>
         <div>
           <strong>{{ user.username }}</strong>
           <span class="role">{{ user.role }}</span>
         </div>
       </div>
-      <button class="report-btn" (click)="reportUser(user.userId)">🚩 Report</button>
+
+      <div class="action-btns">
+        <!-- Add Friend / Requested / Friends button -->
+        <button
+          class="friend-btn"
+          [class.pending]="friendStatus[user.userId]?.status === 'Pending'"
+          [class.accepted]="friendStatus[user.userId]?.status === 'Accepted'"
+          [disabled]="friendStatus[user.userId]?.status === 'Pending' && friendStatus[user.userId]?.iRequested"
+          (click)="friendStatus[user.userId]?.status === 'Accepted' ? unfriend(user.userId) : addFriend(user.userId)">
+          {{ getButtonLabel(user.userId) }}
+        </button>
+
+        <button class="report-btn" (click)="reportUser(user.userId)">🚩</button>
+      </div>
     </div>
   </div>
 </div>

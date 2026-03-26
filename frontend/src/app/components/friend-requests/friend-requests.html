@@ -1,0 +1,87 @@
+<div class="page-layout">
+
+  <!-- 🔹 Navbar -->
+  <nav class="navbar">
+    <h1>ProfileBook</h1>
+    <div class="nav-links">
+      <a routerLink="/feed">← Feed</a>
+      <a routerLink="/search">Find People</a>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- 🔹 Message -->
+    <p class="success" *ngIf="message">{{ message }}</p>
+
+    <!-- 🔹 Friend Requests -->
+    <div class="section">
+      <h2>Friend Requests</h2>
+
+      <!-- ✅ FIXED CONDITION -->
+      <div *ngIf="!requests || requests.length === 0" class="empty">
+        No pending friend requests.
+      </div>
+
+      <!-- 🔥 DEBUG (remove later) -->
+      <!-- <pre>{{ requests | json }}</pre> -->
+
+      <div class="request-card" *ngFor="let req of requests">
+        <div class="user-info">
+          <div class="avatar-circle">
+            {{ req.requesterUsername?.[0]?.toUpperCase() }}
+          </div>
+
+          <!-- ✅ SAFE DISPLAY -->
+          <strong>
+            {{ req.requesterUsername || ('User ' + req.requesterId) }}
+          </strong>
+        </div>
+
+        <div class="btn-group">
+          <button 
+            class="btn-accept"
+            (click)="accept(req.friendshipId)">
+            ✓ Confirm
+          </button>
+
+          <button 
+            class="btn-reject"
+            (click)="reject(req.friendshipId)">
+            ✕ Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🔹 Friends List -->
+    <div class="section">
+      <h2>Your Friends ({{ friends.length || 0 }})</h2>
+
+      <!-- ✅ SAFE CHECK -->
+      <div *ngIf="!friends || friends.length === 0" class="empty">
+        You have no friends yet.
+        <a routerLink="/search">Find people</a> to add.
+      </div>
+
+      <div class="friend-card" *ngFor="let friend of friends">
+        <div class="user-info">
+          <div class="avatar-circle">
+            {{ friend.username?.[0]?.toUpperCase() }}
+          </div>
+
+          <strong>
+            {{ friend.username || ('User ' + friend.userId) }}
+          </strong>
+        </div>
+
+        <button 
+          class="btn-unfriend"
+          (click)="unfriend(friend.userId)">
+          Unfriend
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
